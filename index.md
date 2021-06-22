@@ -1,6 +1,10 @@
 # Easy-To-Hard Datasets
 Pytorch datasets for our [Easy-To-Hard](http://github.com/aks2203/easy-to-hard) project.
 
+
+[![PyPI](https://img.shields.io/pypi/v/easy-to-hard-data)](https://pypi.org/project/easy-to-hard-data/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/snap-stanford/ogb/blob/master/LICENSE)
+
 ## Overview
 
 This package contains datasets desinged for use in studying easy to hard generalization. That is, the training data constits of easy examples, and the testing data has harder ones. The datsets are as follows.
@@ -45,22 +49,26 @@ The intended use for this package is to provide easy to use and ready to downloa
 ## Prefix Sums
 
 <p align='center'>
-  <img width='70%' src='prefix_sum_example.png'/>
+  <img width='70%' src='https://aks2203.github.io/easy-to-hard-data/prefix_sum_example.png'/>
 </p>
 
 For each sequence length, we provide a set of 10,000 input/output pairs. The `__init__` method has the following signature:
-```PrefixSumDataset(self, root: str, num_bits: int = 32, download: bool = True)```
+
+```
+PrefixSumDataset(self, root: str, num_bits: int = 32, download: bool = True)
+```
 
 The `root` argument must be provided and determines where the data is or to where it will be downloaded if it does not already exist at that location. The `num_bits` arument determines the length of the input sequences, and therefore the difficulty of the problem. The default value is 32, but the avaialable options are 16 through 64 as well as 72 and 128. Finally, the `download` argument sets whether to download the data.
 
 ## Mazes
 
 <p align='center'>
-  <img width='38%' src='mazes_example_input.png'/>
-  <img width='40%' src='mazes_example_target.png'/>
+  <img width='38%' src='https://aks2203.github.io/easy-to-hard-data/mazes_example_input.png'/>
+  <img width='40%' src='https://aks2203.github.io/easy-to-hard-data/mazes_example_target.png'/>
 </p>
 
 For each size (small and large), we provide a set of input/output pairs divided into training and testing sets with 50,000 and 10,000 elements, respectively. The `__init__` method has the following signature:
+
 ```
 MazeDataset(self, root: str, train: bool = True, small: bool = True, download: bool = True)
 ```
@@ -70,11 +78,12 @@ The `root` argument must be provided and determines where the data is or to wher
 ## Chess Puzzles
 
 <p align='center'>
-  <img width='40%' src='chess_input_example.png'/>
-  <img width='40%' src='chess_target_example.png'/>
+  <img width='40%' src='https://aks2203.github.io/easy-to-hard-data/chess_input_example.png'/>
+  <img width='40%' src='https://aks2203.github.io/easy-to-hard-data/chess_target_example.png'/>
 </p>
 
 We compiled a dataset from Lichess's puzzles database. We provide a set of about 1.5M input/output pairs sorted by dificulty rating. The `__init__` method has the following signature:
+
 ```
 ChessPuzzleDataset(root: str, train: bool = True, idx_start: int = None, idx_end: int = None, download: bool = True)
 ```
@@ -98,7 +107,7 @@ testloader = data.DataLoader(test_data, batch_size=200, shuffle=False)
 
 ## Cite our work
 
-If you find this code helpful adn use these datasets, please consider citing our work.
+If you find this code helpful and use these datasets, please consider citing our work.
 
 ```
 @misc{schwarzschild2021learn,
