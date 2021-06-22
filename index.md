@@ -45,7 +45,7 @@ The intended use for this package is to provide easy to use and ready to downloa
 ## Prefix Sums
 
 <p align='center'>
-  <img width='70%' src='https://raw.github.com/aks2203/aks2203.github.io/blob/raw/master/images/prefix_sum_example.png'/>
+  <img width='70%' src='prefix_sum_example.png'/>
 </p>
 
 For each sequence length, we provide a set of 10,000 input/output pairs. The `__init__` method has the following signature:
@@ -56,8 +56,8 @@ The `root` argument must be provided and determines where the data is or to wher
 ## Mazes
 
 <p align='center'>
-  <img width='38%' src='https://raw.github.com/aks2203/aks2203.github.io/blob/raw/master/images/mazes_example_input.png'/>
-  <img width='40%' src='https://raw.github.com/aks2203/aks2203.github.io/blob/raw/master/images/mazes_example_target.png'/>
+  <img width='38%' src='mazes_example_input.png'/>
+  <img width='40%' src='mazes_example_target.png'/>
 </p>
 
 For each size (small and large), we provide a set of input/output pairs divided into training and testing sets with 50,000 and 10,000 elements, respectively. The `__init__` method has the following signature:
@@ -70,8 +70,8 @@ The `root` argument must be provided and determines where the data is or to wher
 ## Chess Puzzles
 
 <p align='center'>
-  <img width='40%' src='https://github.com/aks2203/aks2203.github.io/blob/raw/master/images/chess_input_example.png'/>
-  <img width='40%' src='https://github.com/aks2203/aks2203.github.io/blob/raw/master/images/chess_target_example.png'/>
+  <img width='40%' src='chess_input_example.png'/>
+  <img width='40%' src='chess_target_example.png'/>
 </p>
 
 We compiled a dataset from Lichess's puzzles database. We provide a set of about 1.5M input/output pairs sorted by dificulty rating. The `__init__` method has the following signature:
