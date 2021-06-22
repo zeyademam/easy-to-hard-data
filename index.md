@@ -1,37 +1,113 @@
-## Welcome to GitHub Pages
+# Easy-To-Hard Datasets
+Pytorch datasets for our [Easy-To-Hard](http://github.com/aks2203/easy-to-hard) project.
 
-You can use the [editor on GitHub](https://github.com/aks2203/easy-to-hard-data/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+## Overview
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+This package contains datasets desinged for use in studying easy to hard generalization. That is, the training data constits of easy examples, and the testing data has harder ones. The datsets are as follows.
 
-### Markdown
+1. Prefix Sums
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+- Compute the prefix sum modulo two of a binary input string. 
+- The length of the string determines the difficulty of the problem.
+- We provide 53 different sets (10,000 samples per length) from which to choose one for training data and a longer one for testing.
 
-```markdown
-Syntax highlighted code block
+2. Mazes
 
-# Header 1
-## Header 2
-### Header 3
+- Visually solve a maze where the input is a 32 x 32 three channel image, and the output is a binary segmentation mask separating pixels that is the same size as the input with ones at locations that are on the optimal path and zeros elsewhere.
+- We provide small and large mazes, which are easy and hard, respectively. 
 
-- Bulleted
-- List
+3. Chess Puzzles
+- Choose the best next move given a mid-game chess board.
+- The difficulty is determined by the [Lichess](https://lichess.org/training) puzzle rating.
+- We sorted the chess puzzles provided by Lichess, and the first 600,000 easiest puzzles make up an easy training set. Testing can be done with any subset of puzzles with higher indices. The default test set uses indices 600,000 to 700,000.
 
-1. Numbered
-2. List
+# Installation
 
-**Bold** and _Italic_ and `Code` text
+This package can be installed with `pip` using the following command:
 
-[Link](url) and ![Image](src)
+```pip install easy-to-hard-data```
+
+Then, the datasets can be imported using 
+
+```from easy_to_hard_data import PrefixSumDataset, MazeDataset, ChessPuzzleDataset```
+
+This package can also be installed from source, by cloning the repository as follows.
+
+``` 
+git clone https://github.com/aks2203/easy-to-hard-data.git
+cd easy-to-hard-data
+pip install -e .
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+# Usage
+The intended use for this package is to provide easy to use and ready to download datasets in PyTorch for those interested in studying generalization from easy to hard problems. Each of the datasets has options detailed below.
 
-### Jekyll Themes
+## Prefix Sums
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/aks2203/easy-to-hard-data/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+<p align='center'>
+  <img width='70%' src='https://github.com/aks2203/aks2203.github.io/blob/master/images/prefix_sum_example.png'/>
+</p>
 
-### Support or Contact
+For each sequence length, we provide a set of 10,000 input/output pairs. The `__init__` method has the following signature:
+```__init__(self, root: str, num_bits: int = 32, download: bool = True)```
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+The `root` argument must be provided and determines where the data is or to where it will be downloaded if it does not already exist at that location. The `num_bits` arument determines the length of the input sequences, and therefore the difficulty of the problem. The default value is 32, but the avaialable options are [12, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 72, 128]. Finally, the `download` argument sets whether to download the data.
+
+## Mazes
+
+<p align='center'>
+  <img width='38%' src='https://github.com/aks2203/aks2203.github.io/blob/master/images/mazes_example_input.png'/>
+  <img width='40%' src='https://github.com/aks2203/aks2203.github.io/blob/master/images/mazes_example_target.png'/>
+</p>
+
+For each size (small and large), we provide a set of input/output pairs divided into training and testing sets with 50,000 and 10,000 elements, respectively. The `__init__` method has the following signature:
+```
+__init__(self, root: str, train: bool = True, small: bool = True, download: bool = True)
+```
+
+The `root` argument must be provided and determines where the data is or to where it will be downloaded if it does not already exist at that location. The `train` arument distiguishes between the training and testing sets. The `small` arument sets the size (True for small, False for large). Finally, the `download` argument sets whether to download the data.
+
+## Chess Puzzles
+
+<p align='center'>
+  <img width='40%' src='https://github.com/aks2203/aks2203.github.io/blob/master/images/chess_input_example.png'/>
+  <img width='40%' src='https://github.com/aks2203/aks2203.github.io/blob/master/images/chess_target_example.png'/>
+</p>
+
+We compiled a dataset from Lichess's puzzles database. We provide a set of about 1.5M input/output pairs sorted by dificulty rating. The `__init__` method has the following signature:
+```
+__init__(root: str, train: bool = True, idx_start: bool = None, idx_end: bool = None, download: bool = True)
+```
+
+The `root` argument must be provided and determines where the data is or to where it will be downloaded if it does not already exist at that location. The `train` arument distiguishes between the training and testing sets. The `idx_start` and `idx_end` aruments are an alternative to `train` and can be used to manually choose the indices in the sorted data to use. Finally, the `download` argument sets whether to download the data.
+
+## Example
+
+To make two prefix-sum dataloaders, one with training (32 bits) and one with testing (40 bits) data, we provide the following example.
+
+```
+from easy_to_hard_data import PrefixSumDataset
+imoprt torch.utils.data as data
+
+train_data = PrefixSumDataset("./data", num_bits=32, download=True)
+test_data = PrefixSumDataset("./data", num_bits=40, download=True)
+
+trainloader = data.DataLoader(train_data, batch_size=200, shuffle=True)
+testloader = data.DataLoader(test_data, batch_size=200, shuffle=False)
+```
+
+## Cite our work
+
+If you find this code helpful adn use these datasets, please consider citing our work.
+
+```
+@misc{schwarzschild2021learn,
+      title={Can You Learn an Algorithm? Generalizing from Easy to Hard Problems with Recurrent Networks}, 
+      author={Avi Schwarzschild and Eitan Borgnia and Arjun Gupta and Furong Huang and Uzi Vishkin and Micah Goldblum and Tom Goldstein},
+      year={2021},
+      eprint={2106.04537},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+```
+
